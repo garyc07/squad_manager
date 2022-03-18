@@ -1,0 +1,32 @@
+
+- Make Squad page the landing page
+  -- Consider that the signin page should be redirected to if user not logged in
+
+- Cleanup side nav
+  -- Remove the top section
+  -- Remove unused links
+  -- Remove the advertising section
+
+
+# Tables
+Squad 
+- Simple sortable table
+- Ideally like to colorcode rows on primary position 
+
+
+All Players
+- Simple sortable table
+
+
+Matches
+- Collapsible rows table
+
+
+Session
+- Collapsible rows table
+
+
+# Pages
+- Squad, Matches, Sessions -> Need tabs to show grid for other squads
+- Grid rows will need action buttons 
+- Players, Matches, Sessions to have 'Add' button on top of page. Opens form in modal. Button disabled unless current squad of user

@@ -1,0 +1,20 @@
+
+Github repo for template
+=> https://github.com/devias-io/material-kit-react
+
+
+Next JS docs
+https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props
+
+
+For building form 
+https://formik.org/
+
+
+TODO
+- Create custom table to show matches based on mock data init
+- Build based on remote data after
+- Need to get names in api response not just ids (competition for example)
+- Add the 'Add Match' button to page
+- Build form for button
+- Can the table be a custom component so other pages can use it?
