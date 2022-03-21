@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsToMany(models.Match, { through: models.PlayerMatch })
       this.belongsToMany(models.TrainingSession, { through: models.PlayerSession })
       this.belongsToMany(models.Position, { through: models.PlayerPosition })
-      //this.belongsToMany(models.Squad, { through: models.PlayerSquad })
+      this.belongsToMany(models.Squad, { through: models.PlayerSquad })
     }
   }
   Player.init({
