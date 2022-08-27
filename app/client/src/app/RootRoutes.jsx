@@ -1,10 +1,8 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import chartsRoute from './views/charts/ChartsRoute'
-import dashboardRoutes from './views/dashboard/DashboardRoutes'
 import playersRoutes from './views/players/PlayersRoutes'
-import squadsRoutes from './views/squads/SquadsRoutes'
-import materialRoutes from './views/material-kit/MaterialRoutes'
+import squadRoutes from './views/squad/SquadRoutes'
+import matchesRoutes from './views/matches/MatchesRoutes'
 
 const redirectRoute = [
     {
@@ -21,11 +19,9 @@ const errorRoute = [
 ]
 
 const routes = [
-    ...dashboardRoutes,
+    ...squadRoutes,
+    ...matchesRoutes,
     ...playersRoutes,
-    ...squadsRoutes,
-    ...materialRoutes,
-    ...chartsRoute,
     ...redirectRoute,
     ...errorRoute,
 ]
