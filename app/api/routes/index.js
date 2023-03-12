@@ -3,7 +3,7 @@ const path = require('path')
 const basename = path.basename(__filename)
 
 
-module.exports = app => {
+module.exports = (app) => {
 
   const auth = require('../lib/auth')
 

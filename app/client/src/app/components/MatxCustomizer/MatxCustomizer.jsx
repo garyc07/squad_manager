@@ -245,10 +245,7 @@ const demoLayouts = [
                     theme: 'blueDark',
                     fixed: true,
                 },
-            },
-            footer: {
-                theme: 'slateDark1',
-            },
+            }
         },
     },
     {

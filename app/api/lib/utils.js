@@ -24,6 +24,4 @@ const validatePostBody = (req, requiredFields=[]) => {
   return body
 }
 
-module.exports = {
-  validatePostBody
-}
+module.exports = { validatePostBody }

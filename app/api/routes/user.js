@@ -6,7 +6,7 @@ module.exports = (app, auth) => {
   router.post('/login', auth.optional, controller.login)
 
   router.get('/', auth.required, controller.all)
-  router.post('/', auth.required, controller.create)
+  router.post('/', auth.optional, controller.create)
   router.patch('/', auth.required, controller.update)
 
 

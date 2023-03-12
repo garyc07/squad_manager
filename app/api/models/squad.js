@@ -1,8 +1,5 @@
-'use strict';
 const { QueryTypes } = require('@sequelize/core')
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Squad extends Model {
     
@@ -13,20 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     }
 
 
-    static async currentSquad(req) {
-      let squadDetail
-      if(req.query && req.query.season_id) {
-        squadDetail = await this.findByPk(req.query.season_id)
-      } else {
-        // TODO Parse req for payload to get userId from JWT
-        // Could we store the data needed in the token to save a db trip?
-        const userId = 1
-        const result = await sequelize.query(`select u.primary_squad_id as id, s.current_season_id from users u, squads s where u.id = ${userId} and s.id = u.primary_squad_id`,
-          { type: QueryTypes.SELECT }
-        )
-        squadDetail = result[0]
-      }
-      return squadDetail
+    static async currentSquad(currentUser) {
+      const squad = await this.findByPk(currentUser.primary_squad_id)
+      return squad
     }
 
   }
@@ -40,4 +26,4 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true
   })
   return Squad
-};
+}

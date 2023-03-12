@@ -1,15 +1,15 @@
 import React from 'react'
 import {
     Table,
+    TableContainer,
     TableHead,
     TableCell,
     TableBody,
+    TableRow,
     TableSortLabel,
-    TableContainer,
     Box,
     IconButton,
-    Icon,
-    TableRow
+    Icon
 } from '@mui/material'
 import { visuallyHidden } from '@mui/utils'
 import { SimpleCard } from 'app/components'
@@ -42,7 +42,7 @@ function SortableTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {columns.map((column) => (
+        {columns.filter((column) => !column.hidden).map((column) => (
           <TableCell
             key={column.id}
             align={column.numeric ? 'right' : 'left'}
@@ -63,9 +63,6 @@ function SortableTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell>
-          Actions
-        </TableCell>
       </TableRow>
     </TableHead>
   )
@@ -76,10 +73,12 @@ const SortableTable = (props) => {
   const {
     columns,
     rows,
-    title
+    rowidKey,
+    title,
+    addHandler,
+    deleteHandler,
+    editHandler
   } = props
-
-  console.log(props)
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -89,11 +88,6 @@ const SortableTable = (props) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  }
-
-
-  const click = () => {
-    alert('CLICK')
   }
 
 
@@ -115,21 +109,32 @@ const SortableTable = (props) => {
             <TableBody>
               {rows.slice().sort(getComparator(order, orderBy))
                 .map((row) => {
+                  const rowIdentifier = row[rowidKey]
                   return (
-                    <TableRow hover tabIndex={-1} key={row.id}>
-                      {columns.map((col) => {
+                    <TableRow hover tabIndex={-1} key={rowIdentifier}>
+                      {columns.filter((column) => !column.hidden).map((column) => {
+                        if(column.id === 'actions'){
+                          return (                      
+                          <TableCell key={`${column.id}_${rowIdentifier}`}>
+                            {column.types.map((t) => {
+                              switch(t){
+                                case 'delete':
+                                  return (<IconButton key={`delete_${rowIdentifier}`} onClick={() => deleteHandler(row)}><Icon color="error">close</Icon></IconButton>)
+                                case 'edit':
+                                  return (<IconButton key={`edit_${rowIdentifier}`} onClick={() => editHandler(row)}><Icon color="edit">edit</Icon></IconButton>)
+                                case 'add':
+                                  return (<IconButton key={`add_${rowIdentifier}`} onClick={() => addHandler(row)}><Icon color="edit">add</Icon></IconButton>)
+                                default:
+                                  return null
+                              }
+                            })}
+                            </TableCell>
+                          )
+                        }
                         return (
-                          <TableCell key={`${col.id}_${row.id}`}>{row[col.id]}</TableCell>
+                          <TableCell key={`${column.id}_${rowIdentifier}`}>{row[column.id]}</TableCell>
                         )
                       })}
-                      <TableCell>
-                        <IconButton onClick={click}>
-                          <Icon color="error">close</Icon>
-                        </IconButton>
-                        <IconButton>
-                          <Icon color="edit">edit</Icon>
-                        </IconButton>
-                      </TableCell>
                     </TableRow>
                   )
                 })}

@@ -1,7 +1,4 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class PlayerMatch extends Model {
 
@@ -16,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
     goals_scored: DataTypes.INTEGER,
     assists: DataTypes.INTEGER,
     clean_sheet: DataTypes.BOOLEAN,
-    mom: DataTypes.BOOLEAN,
     started: DataTypes.BOOLEAN,
     on_as_sub: DataTypes.BOOLEAN,
     unused_sub: DataTypes.BOOLEAN,
@@ -28,6 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'PlayerMatch',
     underscored: true
-  });
-  return PlayerMatch;
-};
+  })
+  return PlayerMatch
+}

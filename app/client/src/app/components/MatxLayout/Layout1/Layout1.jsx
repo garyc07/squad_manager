@@ -1,4 +1,3 @@
-import Footer from '../../Footer/Footer'
 import Layout1Topbar from './Layout1Topbar'
 import { MatxSuspense } from 'app/components'
 import Layout1Sidenav from './Layout1Sidenav'
@@ -34,7 +33,7 @@ const StyledScrollBar = styled(Scrollbar)(() => ({
     flexDirection: 'column',
 }))
 
-const LayoutContainer = styled(Box)(({ width, secondarySidebar }) => ({
+const LayoutContainer = styled(Box)(({ width, secondarysidebar }) => ({
     height: '100vh',
     display: 'flex',
     flexGrow: '1',
@@ -44,12 +43,12 @@ const LayoutContainer = styled(Box)(({ width, secondarySidebar }) => ({
     position: 'relative',
     overflow: 'hidden',
     transition: 'all 0.3s ease',
-    marginRight: secondarySidebar.open ? 50 : 0,
+    marginRight: secondarysidebar.open ? 50 : 0,
 }))
 
 const Layout1 = () => {
     const { settings, updateSettings } = useSettings()
-    const { layout1Settings, secondarySidebar } = settings
+    const { layout1Settings, secondarysidebar } = settings
     const topbarTheme = settings.themes[layout1Settings.topbar.theme]
     const {
         leftSidebar: { mode: sidenavMode, show: showSidenav },
@@ -93,7 +92,7 @@ const Layout1 = () => {
 
             <LayoutContainer
                 width={sidenavWidth}
-                secondarySidebar={secondarySidebar}
+                secondarysidebar={secondarysidebar}
             >
                 {layout1Settings.topbar.show && layout1Settings.topbar.fixed && (
                     // <Layout1Topbar fixed={true} />
@@ -116,9 +115,6 @@ const Layout1 = () => {
                                 <Outlet />
                             </MatxSuspense>
                         </Box>
-                        {settings.footer.show && !settings.footer.fixed && (
-                            <Footer />
-                        )}
                     </StyledScrollBar>
                 )}
 
@@ -137,15 +133,11 @@ const Layout1 = () => {
                                 <Outlet />
                             </MatxSuspense>
                         </Box>
-                        {settings.footer.show && !settings.footer.fixed && (
-                            <Footer />
-                        )}
                     </ContentBox>
                 )}
 
-                {settings.footer.show && settings.footer.fixed && <Footer />}
             </LayoutContainer>
-            {settings.secondarySidebar.show && <SecondarySidebar />}
+            {settings.secondarysidebar.show && <SecondarySidebar />}
         </Layout1Root>
     )
 }

@@ -1,4 +1,4 @@
-'use strict';
+const { competition_types, venue_types } = require('../../../CONSTANTS')
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('matches', {
@@ -16,9 +16,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      competition_id: {
+      competition: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.ENUM,
+        values: competition_types
       },
       date_time: {
         allowNull: false,
@@ -28,32 +29,40 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      at_home: {
+      venue: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.ENUM,
+        values: venue_types
       },
       goals_for: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       goals_against: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       manager_notes: {
         type: Sequelize.TEXT
       },
+      mom_player_id: {
+        type: Sequelize.INTEGER
+      },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('matches');
+    await queryInterface.dropTable('matches')
   }
-};
+}

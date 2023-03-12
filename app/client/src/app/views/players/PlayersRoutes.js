@@ -1,13 +1,11 @@
 import React, { lazy } from 'react'
 import Loadable from 'app/components/Loadable/Loadable'
-import { authRoles } from '../../auth/authRoles'
 
-const PlayersTable = Loadable(lazy(() => import('./PlayersTable')))
+const PlayersList = Loadable(lazy(() => import('./PlayersList')))
 
 const playersRoutes = [{
   path: '/players',
-  element: <PlayersTable />,
-  auth: authRoles.admin,
+  element: <PlayersList />
 }]
 
 export default playersRoutes

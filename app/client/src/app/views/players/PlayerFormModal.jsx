@@ -1,14 +1,18 @@
 import * as React from 'react'
 import {
   TextField,
+  Select,
+  MenuItem,
+  InputLabel,
   Button,
   Dialog,
   DialogContent,
   DialogTitle
 } from '@mui/material'
-import { useFormik } from 'formik';
-import * as yup from 'yup';
+import { useFormik } from 'formik'
+import * as yup from 'yup'
 import playerColumns from './playerColumns'
+import axios from '../../../axios'
 
 
 const validationSchema = yup.object({
@@ -24,10 +28,7 @@ const validationSchema = yup.object({
 
 
 const FormField = (props) => {
-  const {
-    formik,
-    column
-  } = props
+  const { formik, column } = props
   return (
     <TextField
       fullWidth
@@ -38,7 +39,29 @@ const FormField = (props) => {
       onChange={formik.handleChange}
       error={formik.touched[column.id] && Boolean(formik.errors[column.id])}
       helperText={formik.touched[column.id] && formik.errors[column.id]}
+      variant="standard"
     />
+  )
+}
+
+
+const SelectFormField = (props) => {
+  const { formik, column, options } = props
+  return (
+    <div>
+      <InputLabel>{column.label}</InputLabel>
+      <Select
+        fullWidth
+        id={column.id}
+        name={column.id}
+        label={column.label}
+        value={formik.values[column.id]}
+        onChange={formik.handleChange}
+      >
+        {options.map((option) => <MenuItem value={`${option}`} key={option}>{option}</MenuItem> )}
+      </Select>
+    </div>
+
   )
 }
 
@@ -61,7 +84,15 @@ const PlayerFormModal = (props) => {
     submitHandler
   } = props
 
-  const title = !!(values.id) ? 'Update Player Detail' : 'Add New Player'
+  const [positions, setPositions] = React.useState([])
+  React.useEffect(() => {
+    axios.get('/enums/positions').then(res => setPositions(res.data))
+  }, [])
+
+
+  const isEditForm = !!(values.id)
+  const title = isEditForm ? 'Update Player Detail' : 'Add New Player'
+
 
   const initialValues = (() => {
     const vals = {}
@@ -71,11 +102,12 @@ const PlayerFormModal = (props) => {
     return vals
   })()
 
+
   const formik = useFormik({
     initialValues: initialValues,
     //validationSchema: validationSchema,
-    onSubmit: (values) => submitHandler(values)
-  });
+    onSubmit: (values) => submitHandler(values, isEditForm)
+  })
 
 
 
@@ -85,7 +117,13 @@ const PlayerFormModal = (props) => {
         <DialogTitle id="form-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <form onSubmit={formik.handleSubmit}>
-            {playerColumns.filter((column) => !column.hidden).map((column) => {
+            {playerColumns.filter((column) => !column.hidden).filter((column) => !column.form_hidden).map((column) => {
+              if(column.type === 'select'){
+                const selectOpts = (column.id === 'position') ? positions : []
+                return (
+                  <SelectFormField formik={formik} column={column} key={column.id} options={selectOpts}/>
+                )
+              }
               return (
                 <FormField formik={formik} column={column} key={column.id}/>
               )

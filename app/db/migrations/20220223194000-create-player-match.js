@@ -29,11 +29,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       },
-      mom: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
       started: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
@@ -79,9 +74,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('player_matches');
+    await queryInterface.dropTable('player_matches')
   }
-};
+}

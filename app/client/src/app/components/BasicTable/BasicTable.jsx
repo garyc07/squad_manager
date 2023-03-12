@@ -51,6 +51,8 @@ const BasicTable = (props) => {
                                 return (<IconButton key={`delete_${row.id}`} onClick={() => deleteHandler(row)}><Icon color="error">close</Icon></IconButton>)
                               case 'edit':
                                 return (<IconButton key={`edit_${row.id}`} onClick={() => editHandler(row)}><Icon color="edit">edit</Icon></IconButton>)
+                              default:
+                                return null
                             }
                           })}
                           </TableCell>

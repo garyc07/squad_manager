@@ -20,7 +20,7 @@ const SecondarySidebarToggle = () => {
 
     const toggle = () => {
         updateSettings({
-            secondarySidebar: { open: !settings.secondarySidebar.open },
+            secondarysidebar: { open: !settings.secondarysidebar.open },
         })
     }
 
@@ -34,13 +34,13 @@ const SecondarySidebarToggle = () => {
     const textColor = palette.primary.contrastText
 
     return (
-        <Toggle className={clsx({ open: settings.secondarySidebar.open })}>
-            {settings.secondarySidebar.open && (
+        <Toggle className={clsx({ open: settings.secondarysidebar.open })}>
+            {settings.secondarysidebar.open && (
                 <IconButton onClick={toggle} size="small" aria-label="toggle">
                     <Icon sx={{ color: textColor }}>close</Icon>
                 </IconButton>
             )}
-            {!settings.secondarySidebar.open && (
+            {!settings.secondarysidebar.open && (
                 <Fab color="primary" aria-label="expand" onClick={toggle}>
                     <Icon sx={{ color: textColor }}>settings</Icon>
                 </Fab>

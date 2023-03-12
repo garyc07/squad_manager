@@ -7,7 +7,8 @@ module.exports = {
     database: 'squad_mgmt_dev',
     host: '127.0.0.1',
     port: 5432,
-    dialect: 'postgres'
+    dialect: 'postgres',
+    logging: false
   },
   /*test: {
     username: process.env.CI_DB_USERNAME,

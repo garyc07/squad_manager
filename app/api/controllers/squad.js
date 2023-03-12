@@ -1,5 +1,5 @@
 const { validatePostBody } = require('../lib/utils')
-const { Squad, User, Player, Match, Position, Competition, TrainingSession, SessionPlan } = require('../models')
+const { Squad, User, Player, Match, TrainingSession, SessionPlan } = require('../models')
 
 module.exports.all = async (req, res, next) => {
   const squads = await Squad.findAll()
@@ -14,16 +14,31 @@ module.exports.create = async (req, res, next) => {
   res.status(201).json(squad)
 }
 
+
+
 module.exports.update = async (req, res, next) => {} // 204?
 
 
 
+module.exports.addPlayer = async (req, res, next) => {
+  const requiredFields = ['squad_id', 'player_id']
+  const body = validatePostBody(req, requiredFields)
+  const squad = await Squad.findByPk(body.squad_id)
+  const player = await Player.findByPk(body.player_id)
+
+  if(!squad || !player) return res.sendStatus(404)
+
+  const squadPLayer = await squad.addPlayer(player, { through: body })
+
+  res.status(201).send(squadPLayer)
+}
+
 
 module.exports.players = async (req, res, next) => {
-  
-  // TODO Get squad_id from user token or get request
-  // Should be in user token for default page load for user
-  const currentSquad = await Squad.currentSquad(req)
+
+  // Will only work when the user has a primary squad set, may want some other options too
+  const { user: currentUser } = req.userData
+  const currentSquad = await Squad.currentSquad(currentUser)
 
   const squad = await Squad.findByPk(currentSquad.id, {
     include: [{
@@ -31,14 +46,10 @@ module.exports.players = async (req, res, next) => {
       include: [{
         model: Match,
         where: { squad_id: currentSquad.id, season_id: currentSquad.current_season_id },
-        required: false,
-        include: { model: Competition, required: false}
+        required: false
       }, {
         model: TrainingSession,
         where: { squad_id: currentSquad.id, season_id: currentSquad.current_season_id },
-        required: false
-      }, {
-        model: Position,
         required: false
       }]
     }]
@@ -64,14 +75,13 @@ module.exports.players = async (req, res, next) => {
       total_ratings_count: 0
     }
 
+    // TODO, this reps the exact player data object returned. Should it contain all player data??
     const tempPlayer = {
       player_id: player.id,
       squad_id: squad.id,
-      first_name: player.first_name,
-      last_name: player.last_name,
-      nickname: player.nickname,
+      position: player.position,
+      name: player.name,
       active: player.active,
-      positions: [],
       match_stats: {
         competitive: Object.create(matchStatsTemplate),
         non_competitive: Object.create(matchStatsTemplate),
@@ -84,15 +94,10 @@ module.exports.players = async (req, res, next) => {
       }
     }
 
-    player.Positions.forEach(pos => {
-      const pp = pos.PlayerPosition.get({ plain: true })
-      tempPlayer.positions.push({ acronym: pos.acronym, primary: pp.primary })
-    })
-
 
     player.Matches.forEach(match => {
       const pm = match.PlayerMatch.get({ plain: true })
-      const thisMatchKey = (match.Competition.competitive) ? tempPlayer.match_stats.competitive : tempPlayer.match_stats.non_competitive
+      const thisMatchKey = (match.competition === 'Friendly') ? tempPlayer.match_stats.non_competitive : tempPlayer.match_stats.competitive 
 
       thisMatchKey.num_games_attended += 1
       thisMatchKey.num_games_played_in += (pm.unused_sub) ? 0 : 1
@@ -129,13 +134,13 @@ module.exports.players = async (req, res, next) => {
     players.push(tempPlayer)
   })
 
-  res.send(players)
+  res.send({ squad_name: squad.name, players: players })
 }
 
 
 module.exports.matches = async (req, res, next) => {
   const currentSquad = await Squad.currentSquad(req)
-  const matches = await Match.findAll({ where: { squad_id: currentSquad.id, season_id: currentSquad.current_season_id }, include: { model: Competition }})
+  const matches = await Match.findAll({ where: { squad_id: currentSquad.id, season_id: currentSquad.current_season_id } })
   res.send(matches)
 }
 

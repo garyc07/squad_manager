@@ -6,5 +6,5 @@ module.exports = (app, auth) => {
   router.post('/', controller.create)
   router.patch('/', controller.update)
 
-  app.use('/player', router)
+  app.use('/players', router)
 }

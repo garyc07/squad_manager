@@ -154,7 +154,7 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
                                     badgeContent={<Icon>done</Icon>}
                                     invisible={
                                         settings.layout1Settings.leftSidebar
-                                            .bgImgURL !== bg
+                                            .bgimgurl !== bg
                                     }
                                     sx={{
                                         width: '100%',
@@ -165,7 +165,7 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
                                     <Paper
                                         onClick={() =>
                                             handleChange(
-                                                'layout1Settings.leftSidebar.bgImgURL',
+                                                'layout1Settings.leftSidebar.bgimgurl',
                                                 bg
                                             )
                                         }

@@ -1,29 +1,12 @@
 import React from 'react'
-import { styled } from '@mui/system'
 import { SortableTable } from 'app/components'
-
-
-
+import DefaultContainer from 'app/components/DefaultContainer'
+import squadColumns from './squadColumns'
 import axios from '../../../axios'
 
 
 
-const Container = styled('div')(({ theme }) => ({
-  margin: '30px',
-  [theme.breakpoints.down('sm')]: {
-      margin: '16px',
-  },
-  '& .breadcrumb': {
-      marginBottom: '30px',
-      [theme.breakpoints.down('sm')]: {
-          marginBottom: '16px',
-      },
-  },
-}))
-
-
-
-const columns = [{
+/* const columns = [{
   id: 'name',
   numeric: false,
   disablePadding: true,
@@ -38,34 +21,27 @@ const columns = [{
   numeric: false,
   disablePadding: true,
   label: 'Email'
-}]
+}] */
 
 
 const SquadList = () => {
 
   const [players, setPlayers] = React.useState([])
+  const [squadName, setSquadName] = React.useState('')
 
   React.useEffect(() => {
-    axios.get('/players').then(res => {
-      setPlayers(res.data)
+    axios.get('/squad/players').then(res => {
+      setPlayers(res.data.players)
+      setSquadName(res.data.squad_name)
     })
   }, [])
 
   return ( 
-    <Container>
-      <SortableTable columns={columns} rows={players} title='SQUAD X'/>
-    </Container>
+    <DefaultContainer>
+      <SortableTable columns={squadColumns} rows={players} rowidKey='player_id' title={squadName}/>
+    </DefaultContainer>
   )
 
-  /*return (
-    <Container>
-      <SimpleCard title="All Players">
-        <Box width="100%" overflow="auto">
-            <PlayerTable columns={columns} rows={players}/>
-        </Box>
-      </SimpleCard>
-    </Container>
-  )*/
 }
 
 export default SquadList

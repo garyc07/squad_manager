@@ -5,20 +5,16 @@ const playerColumns = [{
   id: 'name',
   label: 'Name'
 }, {
-  id: 'age',
-  label: 'Age'
-}, {
   id: 'position',
-  label: 'Position'
+  label: 'Position',
+  type: 'select'
 }, {
-  id: 'last_active_date',
-  label: 'Last Active'
-}, {
-  id: 'phone',
+  id: 'squads',
+  label: 'Squads',
+  form_hidden: true
+},{
+  id: 'ph_number',
   label: 'Phone'
-}, {
-  id: 'email',
-  label: 'Email'
 }]
 
 export default playerColumns

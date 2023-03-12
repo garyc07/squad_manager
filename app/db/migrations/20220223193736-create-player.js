@@ -8,15 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      first_name: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      last_name: {
-        type: Sequelize.STRING
-      },
-      nickname: {
-        type: Sequelize.STRING
+      position: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        validate: {
+          isIn: [['Gk', 'Def', 'Mid', 'Att']]
+        }
       },
       dob: {
         type: Sequelize.DATEONLY
@@ -34,11 +35,13 @@ module.exports = {
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },

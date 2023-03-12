@@ -25,6 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 
-/DS_Store
+/.DS_Store
 /_notes
-todo*
+*todo*
+*TODO*
