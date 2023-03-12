@@ -1,4 +1,0 @@
-
-
-# Create seed file 
-npx sequelize-cli seed:generate --name dev_players
